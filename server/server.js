@@ -4,11 +4,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-const tC = require ('./controllers/trainers_controller.js')
+const pC = require ('./controllers/pokemon_controller.js')
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../public/build'))
 
-app.get('/api/trainers', tC.read)
+app.get('/api/pokemon', pC.read)
+app.post('/api/pokemon', pC.create)
+app.put('/api/messages/:id', pC.update)
+app.delete('/api/messages/:id', pC.delete)
 
-app.listen(4000, () => console.log('listening on port 4000'))
+app.listen(3500, () => console.log('listening on port 3500'))

@@ -7,42 +7,121 @@ class App extends Component {
   constructor () {
     super ();
     this.state = {
-      trainers: []
+      pokemon: [],
+      name: "",
+      sprite: "",
+      ability: ""
     }
+  this.getPokemon = this.getPokemon.bind(this);
+  this.addPokemon = this.addPokemon.bind(this);
+  this.updatePokemon = this.updatePokemon.bind(this);
+  this.deletePokemon = this.deletePokemon.bind(this)
   }
 
   componentDidMount () {
-    // console.log('herro')
-    axios.get('/api/trainers').then(res => {
+    this.getPokemon()
+  };
+
+  getPokemon () {
+      axios.get('/api/pokemon').then(res => {
+        this.setState({
+          pokemon: res.data
+        });
+      });
+    }
+
+  addPokemon (name, sprite, ability) {
+    const pokemonInput = {
+      name: name,
+      sprite: sprite,
+      ability: ability
+    }
+    axios.post('/api/pokemon', {pokemonInput}).then(res => {
       console.log(res)
       this.setState({
-        trainers: res.data
-      });
-    });
+      pokemon: res.data
+      })
+      console.log(this.state.name, this.state.sprite, this.state.ability)
+    })
+  }
+
+  updatePokemon (id) {
+    axios.put(`/api/pokemon/deletePokemon${id}`).then(res => {
+      this.setState({
+        pokemon: res.data
+      })
+    })
+  }
+
+  deletePokemon (id) {
+    axios.delete(`/api/pokemon/deletePokemon${id}`).then(res => {
+      this.setState({
+        pokemon: res.data
+      })
+    })
+  }
+
+  nameInput (event) {
+    this.setState({
+      name: event.target.value
+    })
+  }
+
+  spriteInput (event) {
+    this.setState({
+      sprite: event.target.value
+    })
+  }
+
+  abilityInput (event) {
+    this.setState ({
+      ability: event.target.value
+    })
   }
 
   render() {
-    let {trainers} = this.state
-    let newTrainers = trainers.map(trainer => {
-      let {name, age, gender, id, hometown, region, url} = trainer
+    let {pokemon, name, sprite, ability} = this.state
+    let addAPokePal = pokemon.map(object => {
+      let {name, sprite, ability, id} = object
       return (
         <div key={id}>
-
-          <h1>{name}</h1>
-          <h2>{age}</h2>
-          <h2>{gender}</h2>
-          <h2>{hometown}</h2>
-          <h2>{region}</h2>
-          <img src={url}/>
-
-        </div>)
+        <h3>{name}</h3>
+        <img src={sprite}/>
+        <h3>{ability}</h3>
+        </div>
+      )
     })
-    return (
 
+
+    return (
       <div>
-        {newTrainers}
+          <div className="header">
+          <img src="https://image.flaticon.com/icons/svg/188/188990.svg"/>
+          <img src="https://image.flaticon.com/icons/svg/188/188987.svg"/>
+          <img src="https://image.flaticon.com/icons/svg/188/188988.svg"/>
+          <img src="https://image.flaticon.com/icons/svg/188/188989.svg"/>
+          <img src="https://image.flaticon.com/icons/svg/188/188993.svg"/>
+          </div>
+
+      <main>
+        <div className="main-container">
+          <div className="input-pokedex">
+          <h2>Catch a Pokemon!</h2>
+          <h3>Pokemon:</h3><input onChange={(event) => this.nameInput(event)}/>
+          <h3>Sprite:</h3><input onChange={(event) => this.spriteInput(event)}/>
+          <h3>Ability:</h3><input onChange={(event) => this.abilityInput(event)}/>
+          <center><img src="http://pngimg.com/uploads/pokeball/pokeball_PNG24.png" className="submitPokemon" onClick={() => this.addPokemon(name, sprite, ability)}/></center>
+          </div>
+          <div className="current-pokedex">
+            {addAPokePal}
+            <button onClick={this.updatePokemon}>Edit</button>
+            <button onClick={this.deletePokemon}>Delete</button>
+        </div>
       </div>
-    );
+    </main>
+  </div>
+
+    )
   }
 }
 
