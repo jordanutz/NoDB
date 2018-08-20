@@ -11,7 +11,7 @@ app.use(express.static(__dirname + '/../public/build'))
 
 app.get('/api/pokemon', pC.read)
 app.post('/api/pokemon', pC.create)
-app.put('/api/messages/:id', pC.update)
-app.delete('/api/messages/:id', pC.delete)
+app.put('/api/pokemon/:id', pC.update)
+app.delete('/api/pokemon/:id', pC.delete)
 
 app.listen(3500, () => console.log('listening on port 3500'))
