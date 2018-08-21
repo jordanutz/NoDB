@@ -3,13 +3,18 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
+/* Components */
+import Header from './components/Header.js';
+import Current from './components/Current.js';
+import Input from './components/Input.js';
+
 class App extends Component {
   constructor () {
     super ();
     this.state = {
       pokemon: [],
-      name: "",
-      sprite: "",
+      name: '',
+      sprite: '',
       favorite: false,
       newName: ''
     }
@@ -17,6 +22,9 @@ class App extends Component {
   this.addPokemon = this.addPokemon.bind(this);
   this.updatePokemon = this.updatePokemon.bind(this);
   this.deletePokemon = this.deletePokemon.bind(this)
+  this.nameInput = this.nameInput.bind(this);
+  this.spriteInput = this.spriteInput.bind(this);
+  this.newNameInput = this.newNameInput.bind(this);
   }
 
   componentDidMount () {
@@ -46,6 +54,7 @@ class App extends Component {
   }
 
   updatePokemon (id, name) {
+    console.log(id, name)
     axios.put(`/api/pokemon/${id}`, {name}).then(res => {
       console.log(res);
       this.setState({
@@ -63,6 +72,7 @@ class App extends Component {
   }
 
   newNameInput (event) {
+    console.log(event.target.value)
     this.setState ({
       newName: event.target.value
     })
@@ -85,43 +95,32 @@ class App extends Component {
   render() {
     let {pokemon, name, sprite, ability} = this.state
     let addAPokePal = pokemon.map(object => {
-      let {name, sprite, ability, id} = object
-      return (
-        <div className="current-pokedex" key={id}>
-        <input className="inputNew" type="text" placeholder={name} onChange={ (event) => this.newNameInput(event)}/>
 
-        <img className="sprite" src={sprite}/>
-        <center><button className="edit margin" onClick={ () => this.updatePokemon(id, this.state.newName)}>Give Nickname</button></center>
-        <center><button className="edit" onClick={ () => this.deletePokemon(id)}>Delete</button></center>
-        </div>
+      return (
+        <Current key={object.id} {...object}
+          newNameInput={this.newNameInput}
+          updatePokemon={this.updatePokemon}
+          deletePokemon={this.deletePokemon}
+          newName={this.state.newName} />
       )
     })
 
     return (
       <div>
-          <div className="header">
-          <img src="https://image.flaticon.com/icons/svg/188/188990.svg"/>
-          <img src="https://image.flaticon.com/icons/svg/188/188987.svg"/>
-          <img src="https://image.flaticon.com/icons/svg/188/188988.svg"/>
-          <img src="https://image.flaticon.com/icons/svg/188/188989.svg"/>
-          <img src="https://image.flaticon.com/icons/svg/188/188993.svg"/>
-          </div>
-
+          <Header />
       <main>
         <div className="main-container">
-          <div className="input-pokedex">
-          <h2>Catch a Pokemon!</h2>
-          <h3>Pokemon:</h3><input onChange={(event) => this.nameInput(event)}/>
-          <h3>Sprite:</h3><input onChange={(event) => this.spriteInput(event)}/>
-          <h3>Favorite:</h3><button className="favorite">Yes</button><button className="favorite">No</button>
-          <center><img src="http://pngimg.com/uploads/pokeball/pokeball_PNG24.png" className="submitPokemon" onClick={() => this.addPokemon(name, sprite)}/></center>
-          <center><h5>A Jordan Utz Production</h5></center>
-          </div>
+          <Input nameInput={this.nameInput}
+            spriteInput={this.spriteInput}
+            addPokemon={this.addPokemon}
+            name={name}
+            sprite={sprite} />
+          <div className='add-poke-pal'>
             {addAPokePal}
+          </div>
       </div>
     </main>
   </div>
-
     )
   }
 }

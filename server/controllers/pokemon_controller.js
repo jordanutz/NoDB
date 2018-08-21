@@ -3,7 +3,6 @@ let teamBuilder = [];
 
 module.exports = {
   read: (req, res) => {
-    console.log('hit')
     res.status(200).send(teamBuilder);
   },
 
@@ -23,13 +22,14 @@ module.exports = {
 
 
   update: (req, res) => {
+    console.log(req.body)
     const {id} = req.params
     let index = teamBuilder.findIndex (pokemon => pokemon.id == id)
     const {name} = req.body
     console.log(req.body);
 
     if (index !== -1) {
-      /* Change only the name of the component*/ 
+      /* Change only the name of the component*/
       teamBuilder[index].name = name;
       res.status(200).send(teamBuilder)
     } else {
