@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export default function Header () {
+const Header = () => {
 
 return (
 
@@ -12,6 +12,7 @@ return (
     <img src="https://image.flaticon.com/icons/svg/188/188993.svg"/>
   </div>
 
-)
-
+  )
 }
+
+export default Header;

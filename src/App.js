@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
 /* Components */
-import Header from './components/Header.js';
-import Current from './components/Current.js';
-import Input from './components/Input.js';
+import Header from './components/Header';
+import Current from './components/Current';
+import Input from './components/Input';
+import Footer from './components/Footer'
 
 class App extends Component {
   constructor () {
@@ -15,7 +15,6 @@ class App extends Component {
       pokemon: [],
       name: '',
       sprite: '',
-      favorite: false,
       newName: ''
     }
   this.getPokemon = this.getPokemon.bind(this);
@@ -93,34 +92,40 @@ class App extends Component {
 
 
   render() {
-    let {pokemon, name, sprite, ability} = this.state
+    let {pokemon, name, sprite, ability, newName} = this.state;
+    let {newNameInput, updatePokemon, deletePokemon, nameInput, spriteInput, addPokemon } = this;
+
     let addAPokePal = pokemon.map(object => {
 
       return (
         <Current key={object.id} {...object}
-          newNameInput={this.newNameInput}
-          updatePokemon={this.updatePokemon}
-          deletePokemon={this.deletePokemon}
-          newName={this.state.newName} />
+          newNameInput={newNameInput}
+          updatePokemon={updatePokemon}
+          deletePokemon={deletePokemon}
+          newName={newName} />
       )
     })
 
     return (
       <div>
-          <Header />
-      <main>
+        <Header />
+
         <div className="main-container">
-          <Input nameInput={this.nameInput}
-            spriteInput={this.spriteInput}
-            addPokemon={this.addPokemon}
+          <Input nameInput={nameInput}
+            spriteInput={spriteInput}
+            addPokemon={addPokemon}
             name={name}
             sprite={sprite} />
+
           <div className='add-poke-pal'>
             {addAPokePal}
           </div>
+        </div>
+
+        <Footer />  
+
       </div>
-    </main>
-  </div>
+
     )
   }
 }

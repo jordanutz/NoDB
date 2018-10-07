@@ -1,15 +1,27 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 const Current = (props) => {
-  console.log(props.id)
-    return(
-      <div className="current-pokedex" key={props.id}>
-        <input className="inputNew" type="text" placeholder={props.name} onChange={ (event) => props.newNameInput(event)}/>
-        <img className="sprite" src={props.sprite}/>
-        <center><button className="edit margin" onClick={ () => props.updatePokemon(props.id, props.newName)}>Give Nickname</button></center>
-        <center><button className="edit" onClick={ () => props.deletePokemon(props.id)}>Delete</button></center>
+
+  const {id, name, newNameInput, newName, deletePokemon, updatePokemon, sprite} = props;
+
+    return (
+      <div className="current-pokedex" key={id}>
+        <input className="inputNew"
+          type="text"
+          placeholder={name}
+          onChange={ (event) => newNameInput(event)}/>
+
+        <img className="sprite" src={sprite}/>
+
+        <center><button
+          className="edit margin"
+          onClick={ () => updatePokemon(id, newName)}>Give Nickname</button></center>
+
+        <center><button
+          className="edit"
+          onClick={ () => deletePokemon(id)}>Delete</button></center>
       </div>
     )
   }
 
-export default Current
+export default Current;
